@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#100b22">
+<title>Shinobu: The Last Butterfly</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="rotateNotice">Please rotate your device to landscape mode.</div>
+<div id="launchOverlay">
+  <div class="launchCard">
+    <div class="launchButterfly">✿</div>
+    <h1>SHINOBU</h1>
+    <p>THE LAST BUTTERFLY</p>
+    <button id="launchBtn" class="primary">ENTER FULL SCREEN</button>
+    <small>Best played in landscape mode</small>
+  </div>
+</div>
+<div id="app">
+  <header class="hud">
+    <div class="profile">
+      <div class="avatar">蝶</div>
+      <div class="profileText"><b>SHINOBU</b><span>Lv. 1</span></div>
+      <div class="health"><div id="healthFill"></div></div>
+      <small id="healthText">1200 / 1200</small>
+    </div>
+    <div class="currency"><span>🦋 <b id="butterflies">0</b></span><span>🪙 <b id="coins">0</b></span></div>
+    <button class="pause" id="pauseBtn" aria-label="Pause">Ⅱ</button>
+  </header>
+
+  <main id="screen">
+    <section id="menu" class="panel">
+      <div class="menuArt">
+        <div class="moon"></div><div class="wisteria w1"></div><div class="wisteria w2"></div>
+        <div class="menuShinobu"><div class="hair"></div><div class="face"></div><div class="body"></div><div class="cape"></div></div>
+        <div class="menuTitle"><span>SHINOBU</span><small>THE LAST BUTTERFLY</small></div>
+      </div>
+      <div class="menuButtons">
+        <button class="primary" id="newGame">New Game</button>
+        <button id="continueBtn">Continue</button>
+        <button id="chaptersBtn">Chapters</button>
+        <button id="characterBtn">Character</button>
+        <button id="skillsBtn">Skills</button>
+        <button id="collectionBtn">Collection</button>
+        <button id="settingsBtn">Settings</button>
+      </div>
+    </section>
+
+    <section id="chapters" class="panel hidden">
+      <h1>CHAPTERS</h1>
+      <div class="chapterList">
+        <button class="chapter active" data-chapter="1"><span>🦋</span><b>Chapter 1</b><small>The Missing Letter</small><em>PLAY</em></button>
+        <div class="chapter soon"><span>🌙</span><b>Chapter 2</b><small>The Silent Village</small><em>COMING SOON</em></div>
+        <div class="chapter soon"><span>🌲</span><b>Chapter 3</b><small>The Forgotten Forest</small><em>COMING SOON</em></div>
+        <div class="chapter soon"><span>⛩️</span><b>Chapter 4</b><small>The Garden of Echoes</small><em>COMING SOON</em></div>
+        <div class="chapter soon"><span>🌊</span><b>Chapter 5</b><small>The Drowned Kingdom</small><em>COMING SOON</em></div>
+      </div>
+      <button class="backBtn" data-back>← Back</button>
+    </section>
+
+
+    <section id="character" class="panel infoPanel hidden">
+      <h1>SHINOBU · CHARACTER</h1>
+      <div class="infoGrid">
+        <div class="characterPortrait"><div class="portraitButterfly">✿</div><div class="portraitSilhouette"><i></i><b></b><em></em></div><strong>SHINOBU</strong><small>THE LAST BUTTERFLY</small></div>
+        <div class="infoStats">
+          <h2>Shinobu</h2><p class="muted">The last butterfly guardian</p>
+          <div class="statLine"><span>Level</span><b>1</b></div>
+          <div class="statLine"><span>Health</span><b id="profileHealth">1200 / 1200</b></div>
+          <div class="statLine"><span>Attack</span><b>180</b></div>
+          <div class="statLine"><span>Defense</span><b>120</b></div>
+          <div class="statLine"><span>Agility</span><b>110</b></div>
+          <div class="statLine"><span>Element</span><b>Butterfly / Light</b></div>
+          <p class="profileNote">A calm but determined swordswoman who follows the mysterious letter to the Butterfly Mansion.</p>
+        </div>
+      </div>
+      <button class="backBtn" data-back>← Back</button>
+    </section>
+
+    <section id="skills" class="panel infoPanel hidden">
+      <h1>SKILLS · BUTTERFLY ARTS</h1>
+      <div class="skillGrid">
+        <article class="skillCard"><span>⚔</span><h2>Butterfly Dance</h2><p>Quick sword strike against a nearby enemy.</p><small>UNLOCKED · BASIC ATTACK</small></article>
+        <article class="skillCard"><span>✿</span><h2>Butterfly Bloom</h2><p>Release a burst of magical butterflies to damage nearby enemies.</p><small>UNLOCKED · MAGIC BUTTON</small></article>
+        <article class="skillCard lockedSkill"><span>➶</span><h2>Swift Flutter</h2><p>A quick forward dash that will be added in a future update.</p><small>COMING SOON</small></article>
+        <article class="skillCard lockedSkill"><span>❀</span><h2>Wisteria Rain</h2><p>A powerful area skill planned for a later chapter.</p><small>COMING SOON</small></article>
+      </div>
+      <button class="backBtn" data-back>← Back</button>
+    </section>
+
+    <section id="collection" class="panel infoPanel hidden">
+      <h1>COLLECTION · RELICS</h1>
+      <div class="collectionGrid">
+        <article><span>🦋</span><b>Butterfly Tokens</b><strong id="collectionButterflies">0</strong><small>Collected during the journey</small></article>
+        <article><span>🪙</span><b>Gold Coins</b><strong id="collectionCoins">0</strong><small>Earned from defeated enemies</small></article>
+        <article><span>📜</span><b>Mysterious Letter</b><strong>1</strong><small>Received from Hoshimori Village</small></article>
+        <article><span>💎</span><b>Ancient Crystal</b><strong>LOCKED</strong><small>Its power has not awakened</small></article>
+      </div>
+      <button class="backBtn" data-back>← Back</button>
+    </section>
+
+    <section id="settings" class="panel hidden">
+      <h1>SETTINGS</h1>
+      <p>Sound <button id="soundBtn">ON</button></p>
+      <p>Graphics <b>High (prototype)</b></p>
+      <p>Display <b>Landscape 16:9</b></p>
+      <button class="backBtn" data-back>← Back</button>
+    </section>
+
+    <section id="game" class="hidden">
+      <div class="mission"><b>✦ Chapter 1: The Missing Letter</b><span>Reach the Butterfly Mansion's Gate</span><small id="enemyObjective">Defeat Shadow enemies: 0 / 3</small><small id="saveStatus">Auto-save ready</small></div>
+      <div id="bossHud" class="bossHud hidden"><div class="bossName"><b id="bossNameText">TSUKIKO · WISTERIA PHANTOM · PHASE 1</b> <span>CHAPTER BOSS</span></div><div class="bossTrack"><div id="bossHealthFill"></div></div></div>
+      <div id="dashHud" class="dashHud"><span>🦋 BUTTERFLY STEP</span><b id="dashStatus">READY</b></div>
+      <canvas id="world" width="1280" height="720"></canvas>
+      <div class="dialogue hidden" id="dialogue"><b>Shinobu</b><p id="dialogueText">A letter... from Hoshimori Village?</p><button id="dialogueNext">›</button></div>
+      <div class="controls">
+        <div class="stick" id="stick"><span></span></div>
+        <div class="actions">
+          <button id="magicBtn" class="action butterfly">✿<small id="magicStatus">READY</small></button>
+          <button id="jumpBtn" class="action jump">↑</button><button id="dashBtn" class="action dash">➤</button>
+          <button id="attackBtn" class="action attack">⚔</button>
+        </div>
+      </div>
+    </section>
+    <div id="chapterCompleteLayer" class="overlay hidden"><div class="chapterCompleteCard"><div class="completeButterfly">✿</div><p class="completeEyebrow">THE FIRST SEAL AWAKENS</p><h2>CHAPTER 1 COMPLETE</h2><h3>The Missing Letter</h3><p class="endingLine">“One seal is broken… Four more remain. The real battle has just begun.”</p><div class="rewardRow"><div><b>🪙 +150</b><small>Gold Coins</small></div><div><b>🦋 +3</b><small>Butterfly Tokens</small></div></div><div class="completeActions"><button id="chapterContinue" class="primary">Continue</button><button id="chapterReplay">Replay Chapter</button></div></div></div>
+    <div id="pauseLayer" class="overlay hidden"><div class="pauseCard"><h2>PAUSED</h2><button id="resumeBtn" class="primary">Resume</button><button id="saveBtn">Save Game</button><button id="homeBtn">Main Menu</button><button id="fullscreenBtn">Full Screen</button></div></div>
+    <div id="toast" class="toast hidden"></div>
+  </main>
+  
+</div>
+<script src="game.js"></script>
+</body>
+</html>
