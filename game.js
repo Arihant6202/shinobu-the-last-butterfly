@@ -614,44 +614,50 @@ const shinobuSpriteFrames={idle:[],walk:[],run:[]};
     const count=action==="run"?7:8;
     for(let i=1;i<=count;i++){
       const img=new Image();
-      img.src=`assets/characters/shinobu/${action}/${action}_${String(i).padStart(2,"0")}.png`;
+      img.src=`assets/Character/shinobu/${action}/${action}_${String(i).padStart(2,"0")}.png`;
       img.onload=()=>{img.dataset.ready="1"};
       shinobuSpriteFrames[action].push(img);
     }
   }
 })();
 function drawShinobu(x,y){
-  // Current PNGs are rough extracted candidates; use the cleaner consistent vector character
-  // until production-quality frame-by-frame art replaces them.
-  drawShinobuVector(x,y);
-  if(player.hurtTimer>0 && Math.floor(performance.now()/55)%2===0){
-    ctx.save();ctx.globalAlpha=.22;ctx.fillStyle="#fff0ff";ctx.fillRect(x-58,y-220,116,220);ctx.restore();
-  }
-  return;
-  // Legacy sprite loader remains available for later replacement with clean production frames.
-  // Dynamic combat states use the detailed vector pose/effects; locomotion uses PNG frames.
-  if(player.jump>0 || player.attack>0 || player.magic>0 || player.hurtTimer>0 || player.dash>0){
-    drawShinobuVector(x,y);
-    if(player.hurtTimer>0 && Math.floor(performance.now()/55)%2===0){
-      ctx.save();ctx.globalAlpha=.26;ctx.fillStyle="#fff0ff";ctx.fillRect(x-58,y-220,116,220);ctx.restore();
-    }
-    return;
-  }
+  // Match the exact case-sensitive folder names uploaded to GitHub Pages.
+  // PNG locomotion frames are displayed whenever they have loaded successfully.
   const moving=!!(keys.ArrowLeft||keys.ArrowRight||keys.a||keys.d||stickDir!==0);
   const running=!!keys.Shift;
   const action=moving?(running?"run":"walk"):"idle";
   const frames=shinobuSpriteFrames[action]||[];
-  const ready=frames.filter(img=>img.complete&&img.naturalWidth>0);
-  if(ready.length===0){drawShinobuVector(x,y);return;}
   const fps=action==="idle"?5:(action==="walk"?9:13);
   const idx=Math.floor(performance.now()/1000*fps)%frames.length;
   const img=frames[idx];
-  if(!img||!img.complete||!img.naturalWidth){drawShinobuVector(x,y);return;}
-  ctx.save();
-  ctx.translate(x,y);
-  ctx.scale(player.face||1,1);
-  ctx.drawImage(img,-90,-220,180,220);
-  ctx.restore();
+  const fallback=frames.find(f=>f.complete&&f.naturalWidth>0);
+  const chosen=img&&img.complete&&img.naturalWidth>0?img:fallback;
+  if(chosen){
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.scale(player.face||1,1);
+    if(player.hurtTimer>0&&Math.floor(performance.now()/55)%2===0)ctx.globalAlpha=.45;
+    ctx.drawImage(chosen,-90,-220,180,220);
+    ctx.restore();
+  } else {
+    drawShinobuVector(x,y);
+  }
+  // Retain the existing attack/skill effects until matching combat PNGs are verified.
+  if(player.attack>0 || player.magic>0){
+    ctx.save();ctx.translate(x,y);ctx.scale(player.face||1,1);
+    if(player.attack>0){
+      ctx.strokeStyle="#ead0ff";ctx.lineWidth=9;ctx.shadowColor="#c579ff";ctx.shadowBlur=24;
+      ctx.beginPath();ctx.arc(0,-115,105,-1.3,0.7);ctx.stroke();
+    }
+    if(player.magic>0){
+      for(let i=0;i<7;i++){
+        const a=i*Math.PI*2/7+performance.now()/260;
+        ctx.fillStyle=i%2?"#d9aaff":"#fff0ff";
+        ctx.beginPath();ctx.ellipse(Math.cos(a)*76,-120+Math.sin(a)*65,7,12,a,0,Math.PI*2);ctx.fill();
+      }
+    }
+    ctx.restore();
+  }
 }
 
 function frame(){
