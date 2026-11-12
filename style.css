@@ -145,3 +145,67 @@ button:focus-visible{outline:3px solid #fff;outline-offset:3px}
  #game .butterfly{width:60px;height:60px}
  #game .actions{gap:9px}
 }
+
+/* Chapter 1 presentation pass — tuned to the supplied in-game reference */
+:root{--violet:#c99aff;--violet-soft:#8d62c7;--ink:#100a20;--gold:#ffe3a4}
+#app{background:#090817}
+header.hud{height:82px;min-height:82px;padding:8px clamp(10px,2vw,28px);gap:12px;background:linear-gradient(90deg,rgba(12,8,28,.98),rgba(22,12,43,.94));border-bottom:1px solid #b98bff66;box-shadow:0 5px 24px #05030d99}
+.profile{grid-template-columns:54px 112px minmax(110px, min(28vw,360px)) 92px;gap:10px}
+.avatar{width:52px;height:52px;font-size:29px;box-shadow:0 0 18px #c58aff88,inset 0 0 12px #fff7}
+.profileText b{font-family:Georgia,serif;font-size:clamp(16px,1.6vw,23px);letter-spacing:1px}
+.profileText span{font-size:14px}
+.health{height:16px;border:2px solid #b98af0;background:#211432;box-shadow:0 0 12px #a86aff44}
+.health div{background:linear-gradient(90deg,#42d88c,#b8ffad);box-shadow:0 0 12px #6effae}
+.profile small{font-size:13px;white-space:nowrap}
+.currency{gap:12px}
+.currency span{min-width:84px;text-align:center;padding:8px 14px;background:linear-gradient(135deg,#281844dd,#100b22dd);border:1px solid #a77bdc;border-radius:24px;box-shadow:inset 0 0 14px #b68aff22,0 0 15px #8f5bc633}
+.pause{width:62px;height:62px;border-radius:18px;font-size:25px;border:1px solid #c79bff;background:#211536;box-shadow:0 0 20px #a56cff66}
+#screen{height:calc(100% - 82px)}
+#game{background:radial-gradient(ellipse at 50% 60%,#39245f,#0a1028 75%)}
+#world{object-fit:fill;filter:saturate(1.2) contrast(1.07) brightness(1.04)}
+.mission{top:20px;left:clamp(12px,2.4vw,38px);width:min(520px,45vw);padding:16px 20px 15px;background:linear-gradient(120deg,rgba(23,13,42,.94),rgba(32,18,54,.84));border:1px solid #c99aff9c;border-left:3px solid #f3c66f;border-radius:15px;box-shadow:0 8px 30px #05030d99,0 0 18px #a56cff33;backdrop-filter:blur(10px);gap:7px}
+.mission b{font-size:clamp(17px,2vw,26px);color:var(--gold);text-shadow:0 0 14px #ffdc9a55}
+.mission span{font-size:clamp(13px,1.3vw,18px);color:#fff7ec}
+.mission small{font-size:clamp(11px,1vw,14px);color:#d9c8ed}
+#saveStatus{color:#b8f2d5}
+.bossHud{top:20px;right:clamp(12px,2vw,34px);width:min(390px,32vw);padding:12px 16px;border-radius:14px;background:#130c25df;border:1px solid #c58cff88;box-shadow:0 0 22px #9d65e955;z-index:3}
+.bossName{font-size:12px;letter-spacing:.8px;color:#f4dcff}
+.bossTrack{height:12px;border-radius:10px;background:#2b1739;border:1px solid #c79aff;margin-top:8px;overflow:hidden}
+#bossHealthFill{height:100%;background:linear-gradient(90deg,#8f42d1,#f06acb);box-shadow:0 0 14px #e16bff}
+.dashHud{right:28px;bottom:122px;padding:9px 16px;border-radius:22px;background:#160d2bdb;border:1px solid #bd91ee;box-shadow:0 0 18px #a56cff55;z-index:4;font-size:13px}
+.dialogue{left:50%;transform:translateX(-50%);bottom:24px;width:min(700px,55vw);min-height:112px;padding:18px 76px 18px 28px;border:1.5px solid #d1a5ff;border-radius:18px;background:linear-gradient(110deg,rgba(17,10,31,.97),rgba(32,16,52,.94));box-shadow:0 0 28px #a46bff66,inset 0 0 28px #8d5ac622;z-index:7}
+.dialogue b{font-size:clamp(20px,2vw,30px);color:#f5e8ff;text-shadow:0 0 12px #bd80ff88}
+.dialogue p{font-size:clamp(17px,2vw,27px);line-height:1.25;margin:9px 0 0;color:#fffafc}
+.dialogue button{right:15px;bottom:16px;width:48px;height:48px;border-radius:15px;font-size:30px;background:#211337;border:1px solid #d5b0ff;box-shadow:0 0 18px #b984ff77}
+.controls{bottom:16px;padding:0 clamp(18px,4vw,60px);z-index:5}
+.stick{width:clamp(92px,11vw,150px);height:clamp(92px,11vw,150px);border:2px solid #e6d5ff99;background:radial-gradient(circle,#a98bd522,#2a174633);box-shadow:inset 0 0 24px #d3b4ff22,0 0 20px #a76bff33;backdrop-filter:blur(3px)}
+.stick span{width:43%;height:43%;background:linear-gradient(145deg,#f7edffcc,#bca0e8aa);box-shadow:0 0 18px #e1c5ff99}
+.actions{gap:clamp(8px,1.2vw,18px)}
+.action{width:clamp(58px,6.2vw,82px);height:clamp(58px,6.2vw,82px);font-size:clamp(24px,2.5vw,34px);border:2px solid #e0baff;background:radial-gradient(circle at 35% 25%,#8b5dc9dd,#281344ed);box-shadow:0 0 24px #bc7dff88,inset 0 0 14px #f2dcff33;transition:transform .12s,filter .12s}
+.action:active{transform:scale(.9);filter:brightness(1.5)}
+.action small{font-size:9px;letter-spacing:.5px}
+.action.cooling,.dashHud.cooling{opacity:.62;filter:saturate(.65)}
+#rotateNotice{font-family:Georgia,serif}
+@media(max-width:900px) and (orientation:landscape){
+ header.hud{height:64px;min-height:64px;padding:5px 10px}
+ #screen{height:calc(100% - 64px)}
+ .profile{grid-template-columns:42px 76px minmax(85px,1fr) 70px;gap:6px;flex:1;min-width:0}
+ .avatar{width:40px;height:40px;font-size:22px}
+ .profileText b{font-size:15px}.profileText span{font-size:11px}
+ .health{height:12px}.profile small{font-size:10px}
+ .currency{gap:5px;font-size:14px}.currency span{min-width:55px;padding:5px 7px}
+ .pause{width:44px;height:44px;border-radius:12px;font-size:20px;padding:0}
+ .mission{top:10px;left:12px;width:min(390px,44vw);padding:10px 12px;gap:4px}
+ .mission b{font-size:16px}.mission span{font-size:12px}.mission small{font-size:10px}
+ .dialogue{width:min(560px,52vw);min-height:76px;bottom:12px;padding:10px 58px 10px 16px}
+ .dialogue b{font-size:18px}.dialogue p{font-size:16px;margin-top:4px}.dialogue button{width:38px;height:38px;right:9px;bottom:9px}
+ .controls{bottom:9px;padding:0 18px}.stick{width:88px;height:88px}.actions{gap:7px}.action{width:54px;height:54px;font-size:22px}
+ .dashHud{bottom:88px;right:14px;padding:6px 10px;font-size:10px}
+}
+@media(max-height:430px) and (orientation:landscape){
+ header.hud{height:54px;min-height:54px}#screen{height:calc(100% - 54px)}
+ .mission{top:7px;padding:7px 10px}.mission b{font-size:14px}.mission span{font-size:11px}.mission small{font-size:9px}
+ .stick{width:74px;height:74px}.action{width:48px;height:48px}
+ .dialogue{min-height:64px;bottom:7px;padding:7px 50px 7px 12px}.dialogue b{font-size:15px}.dialogue p{font-size:13px}.dialogue button{width:32px;height:32px}
+ .dashHud{bottom:67px}
+}

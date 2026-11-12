@@ -608,53 +608,73 @@ function drawShinobuVector(x,y){
  ctx.restore();
 }
 
-const shinobuSpriteFrames={idle:[],walk:[],run:[]};
-(function loadShinobuSpriteFrames(){
-  for(const action of ["idle","walk","run"]){
-    const count=action==="run"?7:8;
-    for(let i=1;i<=count;i++){
-      const img=new Image();
-      img.src=`assets/Character/shinobu/${action}/${action}_${String(i).padStart(2,"0")}.png`;
-      img.onload=()=>{img.dataset.ready="1"};
-      shinobuSpriteFrames[action].push(img);
-    }
+// Case-sensitive paths exactly matching the folders shown in the user's GitHub screenshots.
+// assets/Character/shinobu/{idle,walk,run,Attack,skill}/<action>_NN.png
+const shinobuSpriteFrames={idle:[],walk:[],run:[],attack:[],skill:[]};
+const spriteLoadState={loaded:0,failed:0};
+function loadFrameSet(action,folder,count,prefix=action){
+  for(let i=1;i<=count;i++){
+    const img=new Image();
+    img.decoding="async";
+    img.src=`assets/Character/shinobu/${folder}/${prefix}_${String(i).padStart(2,"0")}.png`;
+    img.onload=()=>{spriteLoadState.loaded++;};
+    img.onerror=()=>{spriteLoadState.failed++;};
+    shinobuSpriteFrames[action].push(img);
   }
-})();
+}
+loadFrameSet("idle","idle",8);
+loadFrameSet("walk","walk",8);
+loadFrameSet("run","run",7);
+loadFrameSet("attack","Attack",10,"attack");
+loadFrameSet("skill","skill",10,"skill");
+
+function getSpriteAction(){
+  if(player.magic>0)return "skill";
+  if(player.attack>0)return "attack";
+  const moving=!!(keys.ArrowLeft||keys.ArrowRight||keys.a||keys.d||stickDir!==0||Math.abs(player.vx||0)>.4);
+  if(!moving)return "idle";
+  return (keys.Shift||Math.abs(player.vx||0)>4.7)?"run":"walk";
+}
 function drawShinobu(x,y){
-  // Match the exact case-sensitive folder names uploaded to GitHub Pages.
-  // PNG locomotion frames are displayed whenever they have loaded successfully.
-  const moving=!!(keys.ArrowLeft||keys.ArrowRight||keys.a||keys.d||stickDir!==0);
-  const running=!!keys.Shift;
-  const action=moving?(running?"run":"walk"):"idle";
+  const action=getSpriteAction();
   const frames=shinobuSpriteFrames[action]||[];
-  const fps=action==="idle"?5:(action==="walk"?9:13);
-  const idx=Math.floor(performance.now()/1000*fps)%frames.length;
+  const fps={idle:5,walk:9,run:13,attack:18,skill:14}[action]||8;
+  // Keep a stable frame at the start/end of short combat animations.
+  const elapsed=performance.now()/1000*fps;
+  const idx=Math.floor(elapsed)%Math.max(1,frames.length);
   const img=frames[idx];
-  const fallback=frames.find(f=>f.complete&&f.naturalWidth>0);
-  const chosen=img&&img.complete&&img.naturalWidth>0?img:fallback;
+  const chosen=(img&&img.complete&&img.naturalWidth>0)?img:frames.find(f=>f.complete&&f.naturalWidth>0);
   if(chosen){
-    ctx.save();
-    ctx.translate(x,y);
-    ctx.scale(player.face||1,1);
-    if(player.hurtTimer>0&&Math.floor(performance.now()/55)%2===0)ctx.globalAlpha=.45;
-    ctx.drawImage(chosen,-90,-220,180,220);
+    ctx.save();ctx.translate(x,y);ctx.scale(player.face||1,1);
+    if(player.hurtTimer>0&&Math.floor(performance.now()/55)%2===0)ctx.globalAlpha=.48;
+    // Candidate frames were normalized to a shared 180x220 canvas in the uploaded pack.
+    // Preserve their proportions and common foot baseline instead of stretching them.
+    const targetW=190,targetH=232;
+    ctx.drawImage(chosen,-targetW/2,-targetH+8,targetW,targetH);
     ctx.restore();
-  } else {
+  }else{
     drawShinobuVector(x,y);
   }
-  // Retain the existing attack/skill effects until matching combat PNGs are verified.
-  if(player.attack>0 || player.magic>0){
+  // Readable, layered combat feedback remains visible even while action frames play.
+  if(action==="attack"){
+    const p=1-Math.max(0,player.attack)/18;
     ctx.save();ctx.translate(x,y);ctx.scale(player.face||1,1);
-    if(player.attack>0){
-      ctx.strokeStyle="#ead0ff";ctx.lineWidth=9;ctx.shadowColor="#c579ff";ctx.shadowBlur=24;
-      ctx.beginPath();ctx.arc(0,-115,105,-1.3,0.7);ctx.stroke();
-    }
-    if(player.magic>0){
-      for(let i=0;i<7;i++){
-        const a=i*Math.PI*2/7+performance.now()/260;
-        ctx.fillStyle=i%2?"#d9aaff":"#fff0ff";
-        ctx.beginPath();ctx.ellipse(Math.cos(a)*76,-120+Math.sin(a)*65,7,12,a,0,Math.PI*2);ctx.fill();
-      }
+    ctx.globalAlpha=.82;
+    const slash=ctx.createLinearGradient(22,-190,150,-45);
+    slash.addColorStop(0,"rgba(255,255,255,0)");slash.addColorStop(.45,"rgba(238,211,255,.95)");slash.addColorStop(1,"rgba(177,105,255,0)");
+    ctx.strokeStyle=slash;ctx.lineWidth=13;ctx.shadowColor="#c47aff";ctx.shadowBlur=25;
+    ctx.beginPath();ctx.arc(20,-115,112,-1.28+p*.55,.55+p*.55);ctx.stroke();ctx.restore();
+  }
+  if(action==="skill"){
+    ctx.save();ctx.translate(x,y);ctx.globalCompositeOperation="lighter";
+    const t=performance.now()/250;
+    for(let i=0;i<12;i++){
+      const a=i*Math.PI*2/12+t, r=65+Math.sin(t*1.8+i)*12;
+      const bx=Math.cos(a)*r,by=-125+Math.sin(a)*r*.68;
+      ctx.save();ctx.translate(bx,by);ctx.rotate(a);
+      ctx.fillStyle=i%2?"rgba(199,143,255,.82)":"rgba(255,239,255,.95)";
+      ctx.shadowColor="#d29aff";ctx.shadowBlur=16;
+      ctx.beginPath();ctx.ellipse(-5,0,5,10,-.45,0,Math.PI*2);ctx.ellipse(5,0,5,10,.45,0,Math.PI*2);ctx.fill();ctx.restore();
     }
     ctx.restore();
   }
